@@ -57,6 +57,8 @@ class SimpleFacebookApi {
 	// interface
 	public function setConfig($c){
 		// array("appid","apikey","shortlived access token")
+		list($appid, $appsecret, $accesstoken) = $c;
+		$this->cacheid = "fblogin-".$appid;
 		$this->config = $c;
 	}
 	private function getConfig(){
@@ -64,7 +66,11 @@ class SimpleFacebookApi {
 	}
 	protected function send($config, $service_url, $message, $verbose = true){
 		$this->_verbose=$verbose;
-		//printf("SAVED TOKEN:\n");print_r($this->popAccessToken());printf("\n---\n");
+		if($verbose){
+			printf("try pop accesstoken:\n");
+			print_r($this->popAccessToken());
+			printf("\n");
+		}
 		if(!($access_token = 
 			$this->getParam($this->popAccessToken(), "access_token"))){
 			// setup time: the first time delete the cached file
