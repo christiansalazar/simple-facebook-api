@@ -78,13 +78,16 @@ class SimpleFacebookApi {
 			if($response = $this->getNewLongLiveAccessToken($config)){
 				$access_token = $this->getParam($response, "access_token");
 				$expires = $this->getParam($response, "expires");
-				printf("new token obtained. expires: %s\n",
-					date("Y-m-d H:i:s T",time()+$expires));
+				if($verbose)
+					printf("new token obtained. expires: %s\n",
+						date("Y-m-d H:i:s T",time()+$expires));
 				$this->pushAccessToken($response);
 			}else{
 				$this->clearCache();
-				printf("\nlast error was:\n%s\n",$this->_lasterrorcode);
-				printf("\nlast response was:\n%s\n",$this->_lastresponse);
+				if($verbose){
+					printf("\nlast error was:\n%s\n",$this->_lasterrorcode);
+					printf("\nlast response was:\n%s\n",$this->_lastresponse);
+				}
 				die("can't create a long live access token.\nprovide a new short-live access token in config.\n");
 			}
 		}
